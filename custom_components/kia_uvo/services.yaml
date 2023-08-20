@@ -280,3 +280,65 @@ set_charge_limits:
             max: 100
             step: 10
             unit_of_measurement: '%'
+set_windows_state:
+  description: Opens or closes the specified windows
+  fields:
+    device_id:
+      name: Vehicle
+      description: Target vehicle
+      required: false
+      selector:
+        device:
+          integration: kia_uvo
+    back_left:
+      name: Back Left
+      description: Back left window
+      required: false
+      selector:
+        select:
+          options:
+            - label: Closed
+              value: 0
+            - label: Open
+              value: 1
+            - label: Ventilation
+              value: 2
+    back_right:
+      name: Back Right
+      description: Back right window
+      required: false
+      selector:
+        select:
+          options:
+            - label: Closed
+              value: 0
+            - label: Open
+              value: 1
+            - label: Ventilation
+              value: 2
+    front_left:
+      name: Front Left
+      description: Front left window
+      required: false
+      selector:
+        select:
+          options:
+            - label: Closed
+              value: 0
+            - label: Open
+              value: 1
+            - label: Ventilation
+              value: 2
+    front_right:
+      name: Front Right
+      description: Front right window
+      required: false
+      selector:
+        select:
+          options:
+            - label: Closed
+              value: 0
+            - label: Open
+              value: 1
+            - label: Ventilation
+              value: 2

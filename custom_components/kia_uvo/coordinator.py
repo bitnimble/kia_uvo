@@ -9,6 +9,8 @@ from site import venv
 from hyundai_kia_connect_api import (
     VehicleManager,
     ClimateRequestOptions,
+    WindowRequestOptions,
+    WINDOW_STATE,
 )
 from hyundai_kia_connect_api.exceptions import *
 
@@ -228,11 +230,11 @@ class HyundaiKiaConnectDataUpdateCoordinator(DataUpdateCoordinator):
         )
         await self.async_request_refresh()
 
-    async def set_window_state(
-        self, vehicle_id: str, window_id: int, window_state: int
+    async def async_set_windows_state(
+        self, vehicle_id: str, options: WindowRequestOptions
     ):
         await self.async_check_and_refresh_token()
         await self.hass.async_add_executor_job(
-            self.vehicle_manager.set_window_state, vehicle_id, window_id, window_state
+            self.vehicle_manager.set_windows_state, vehicle_id, options
         )
         await self.async_request_refresh()

@@ -22,6 +22,7 @@ SERVICE_STOP_CHARGE = "stop_charge"
 SERVICE_SET_CHARGE_LIMIT = "set_charge_limits"
 SERVICE_OPEN_CHARGE_PORT = "open_charge_port"
 SERVICE_CLOSE_CHARGE_PORT = "close_charge_port"
+SERVICE_SET_WINDOWS_STATE = "set_windows_state"
 
 SUPPORTED_SERVICES = (
     SERVICE_UPDATE,
@@ -35,6 +36,7 @@ SUPPORTED_SERVICES = (
     SERVICE_SET_CHARGE_LIMIT,
     SERVICE_OPEN_CHARGE_PORT,
     SERVICE_CLOSE_CHARGE_PORT,
+    SERVICE_SET_WINDOWS_STATE,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -117,6 +119,17 @@ def async_setup_services(hass: HomeAssistant) -> bool:
                 f"{DOMAIN} - Enable to set charge limits.  Both AC and DC value required, but not provided."
             )
 
+    async def async_handle_set_windows_state(call):
+        coordinator = _get_coordinator_from_device(hass, call)
+        vehicle_id = _get_vehicle_id_from_device(hass, call)
+        back_left = call.data.get("back_left")
+        back_right = call.data.get("back_right")
+        front_left = call.data.get("front_left")
+        front_right = call.data.get("front_right")
+        await coordinator.async_set_windows_state(
+            vehicle_id, {back_left, back_right, front_left, front_right}
+        )
+
     services = {
         SERVICE_FORCE_UPDATE: async_handle_force_update,
         SERVICE_UPDATE: async_handle_update,
@@ -129,6 +142,7 @@ def async_setup_services(hass: HomeAssistant) -> bool:
         SERVICE_SET_CHARGE_LIMIT: async_handle_set_charge_limit,
         SERVICE_OPEN_CHARGE_PORT: async_handle_open_charge_port,
         SERVICE_CLOSE_CHARGE_PORT: async_handle_close_charge_port,
+        SERVICE_SET_WINDOWS_STATE: async_handle_set_windows_state,
     }
 
     for service in SUPPORTED_SERVICES:
